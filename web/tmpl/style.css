@@ -2,11 +2,23 @@ body {background:#f1f1f1; font-family: Verdana, sans-serif; font-size:14px; marg
 
 #wrapper {width:1000px; margin:0px auto; border-left:1px solid #aaa; border-right:1px solid #aaa; background:#fff;}
 #header, #content, #footer {padding:10px 15px;}
-.header {height:150px; text-align:center;}
-.footer {height:100px; text-align:center;}
+#header {height:100px;  border-bottom:1px solid #aaa; }
+#logo {font-size:20px; color: #3488E1; margin:15px 0 0 20px;}
+ul#mainMenu {margin:45px 0 0 0; padding:0;}
+ul#mainMenu li { float:left; list-style:none; margin:0 15px;}
 
-.posts {margin:0 0 10px 0; padding:5px 0px; border-bottom:1px solid #f5f5f5;font-size:16px; font-weight:bold; }
+#footer {height:30px;border-top:1px solid #aaa; }
+
+.posts {margin:0 0 5px 0; padding:5px 0px 5px 5px; border-bottom:1px solid #f5f5f5;font-size:16px; font-weight:bold; }
 
 .post {margin:0 0 15px 0; padding:5px 0px; border-bottom:1px solid #f5f5f5;}
 .postName {font-size:16px; font-weight:bold; margin:0 0 5px 0;}
 .postContent {}
+
+.editLink {font-size:12px; float:right; font-weight:normal;}
+
+.formEdit, .formAdd, .formId {}
+
+.formEdit input, .formAdd input, .formId input {width:400px;}
+.formEdit input.button, .formAdd input.button, .formId input.button {width:100px;}
+.formEdit textarea, .formAdd textarea, .formId textarea {width:400px; height:300px;}

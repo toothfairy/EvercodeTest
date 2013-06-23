@@ -5,12 +5,16 @@ $base = Connect();
 
 PrintHeader("Главная страница");
 
-$sql = 'SELECT id, name, content, date FROM posts ORDER BY id';
-foreach ($base -> query($sql) as $row) {
-        ?>
-			<div class="posts"><a href="/post.php?id=<?=$row['id']?>"><?=$row['name']?></a></div>
-		<?php
-    }
-	
+$sql = 'SELECT id, name, content, date FROM posts ORDER BY id DESC';
+$sql = $base -> prepare($sql);
+$sql -> execute();
+$post = $sql -> fetch();
+while ($post)
+{
+	?>
+	<div class="posts"><a href="/post.php?id=<?=$post['id']?>"><?=$post['name']?></a></div>
+	<?php
+	$post = $sql -> fetch();
+}
 PrintFooter();
 ?>
