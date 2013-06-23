@@ -1,0 +1,12 @@
+body {background:#f1f1f1; font-family: Verdana, sans-serif; font-size:14px; margin:0;}
+
+#wrapper {width:1000px; margin:0px auto; border-left:1px solid #aaa; border-right:1px solid #aaa; background:#fff;}
+#header, #content, #footer {padding:10px 15px;}
+.header {height:150px; text-align:center;}
+.footer {height:100px; text-align:center;}
+
+.posts {margin:0 0 10px 0; padding:5px 0px; border-bottom:1px solid #f5f5f5;font-size:16px; font-weight:bold; }
+
+.post {margin:0 0 15px 0; padding:5px 0px; border-bottom:1px solid #f5f5f5;}
+.postName {font-size:16px; font-weight:bold; margin:0 0 5px 0;}
+.postContent {}
