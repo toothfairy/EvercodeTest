@@ -20,7 +20,7 @@ if ($id != 'NULL')
 				?>
 				<div class="post">
 					<div class="postName">
-						<div class="editLink"><a href="/edit.php?id=<?=$post['id']?>">Редактировать</a></div>
+						<div class="editLink"><a href="/edit/<?=$post['id']?>">Редактировать</a></div>
 						<?=$post['date']?>: <?=$post['name']?>
 					</div>
 					<div class="postContent"><?=$post['content']?></div>

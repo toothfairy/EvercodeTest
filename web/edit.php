@@ -3,20 +3,7 @@ require_once "/tmpl/functions.php";
 
 $base = Connect();
 
-	$auth = false;
-	if (!isset($_SERVER['PHP_AUTH_USER'])) 
-	{
-		header('WWW-Authenticate: Basic realm="Authorization"');
-		header('HTTP/1.0 401 Unauthorized');
-		$auth = false;
-	} else {
-		$login = getLogin();
-		$pas = getPass();	
-		if ($login == $_SERVER['PHP_AUTH_USER'] and $pas == $_SERVER['PHP_AUTH_PW'])
-			$auth = true;
-		else
-			$auth = false;
-	}
+$auth = getAuth();
 
 if ($auth)
 {
@@ -62,11 +49,12 @@ if ($auth)
 				$sql = $base -> prepare($sql);
 				$sql -> bindParam (':id',$id,PDO::PARAM_INT);
 				$sql -> bindParam (':name',$newName,PDO::PARAM_STR);
+				$newText = str_replace("\r\n", "<br>", $newText);
 				$sql -> bindParam (':content',$newText,PDO::PARAM_STR);
 				$sql -> bindParam (':date',$newDate,PDO::PARAM_STR);
 				$bl = $sql -> execute();
 				?>
-				<p><strong>Запись отредактирована</strong>, <a href="/post.php?id=<?=$id?>">Перейти</a></p>
+				<p><strong>Запись отредактирована</strong>, <a href="/post/<?=$id?>">Перейти</a></p>
 				<?php
 			}
 		}

@@ -16,6 +16,7 @@ function PrintHeader($title)
 			<li><a href="/" title="">Главная</a></li>
 			<li><a href="/add.php" title="">Добавить запись</a></li>
 			<li><a href="/edit.php" title="">Редактировать запись</a></li>
+			<li><a href="/exit.php" title="">Выход</a></li>
 		</ul>
 	</div>
 	<div id="content">
@@ -49,7 +50,7 @@ function PrintForm($name, $params = '')
 	if ($name == 'formEdit')
 	{
 	?>
-		<form action="/edit.php?id=<?=$params['id']?>" method="post" class="formEdit">
+		<form action="/edit/<?=$params['id']?>" method="post" class="formEdit">
 			<p>Введите название<br>
 				<input type="text" name="name" value="<?=$params['name']?>">
 			</p>
@@ -58,6 +59,9 @@ function PrintForm($name, $params = '')
 			</p>
 			<p>	
 				Введите текст<br>
+				<?php
+				$params['content'] = str_replace("<br>", "\r\n", $params['content']);	// что бы удобно было редактировать
+				?>
 				<textarea rows="8" name="text"><?=$params['content']?></textarea>
 			</p>
 			<p><input type="submit" class="button" autofocus></p>
@@ -114,5 +118,26 @@ function getPass()
 	return 'qwerty';
 }
 
+function getAuth()
+{	
+	$auth = false;
+	$login = getLogin();
+	$pas = getPass();
+	if (!isset($_SERVER['PHP_AUTH_USER'])) 
+	{
+		header('WWW-Authenticate: Basic realm="Authorization"');		
+		// header('HTTP/1.0 401 Unauthorized');
+		$auth = false;
+	} else {			
+		if ($login == $_SERVER['PHP_AUTH_USER'] and $pas == $_SERVER['PHP_AUTH_PW'])
+			$auth = true;
+		else {
+			$auth = false;	
+			header( "HTTP/1.0 401 Unauthorized");
+			header('WWW-Authenticate: Basic realm="Wrong login/password"');
+		}
+	}	
+	return $auth;	
+}
 ?>
 

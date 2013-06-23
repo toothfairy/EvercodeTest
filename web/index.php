@@ -19,7 +19,8 @@ if (is_numeric($page))
 	$numPages = ceil($n/$postsOnPage);
 	$postStart = $page*$postsOnPage - $postsOnPage;
 	$postEnd = $page*$postsOnPage - 1;
-	if ($postEnd >= $postsOnPage)
+	
+	if ($postEnd >= $n)
 		$postEnd = $n - 1;	
 	if ($page > $numPages)
 	{
@@ -30,7 +31,7 @@ if (is_numeric($page))
 		for ($i = $postStart; $i <= $postEnd; $i++)
 		{
 			?>		
-			<div class="posts"><a href="/post.php?id=<?=$post[$i]['id']?>"><?=$post[$i]['name']?></a></div>
+			<div class="posts"><a href="/post/<?=$post[$i]['id']?>"><?=$post[$i]['name']?></a></div>
 			<?php
 		}
 	}
@@ -41,7 +42,7 @@ if (is_numeric($page))
 		if ($page == $i)
 			echo "<b>".$i."</b> ";
 		else
-			echo "<a href=\"/?page=".$i."\">".$i."</a> ";
+			echo "<a href=\"".$i."\">".$i."</a> ";
 	}
 }
 else
