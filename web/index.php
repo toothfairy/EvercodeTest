@@ -3,18 +3,53 @@ require_once "/tmpl/functions.php";
 
 $base = Connect();
 
+$page = isset($_GET['page']) ? $_GET['page'] : '1';
 PrintHeader("Главная страница");
 
-$sql = 'SELECT id, name, content, date FROM posts ORDER BY id DESC';
-$sql = $base -> prepare($sql);
-$sql -> execute();
-$post = $sql -> fetch();
-while ($post)
+if (is_numeric($page))
 {
-	?>
-	<div class="posts"><a href="/post.php?id=<?=$post['id']?>"><?=$post['name']?></a></div>
-	<?php
-	$post = $sql -> fetch();
+	$sql = 'SELECT id, name, content, date FROM posts ORDER BY id DESC';
+	$sql = $base -> prepare($sql);
+	$sql -> execute();
+
+	$post = $sql -> fetchAll();
+
+	$n = count($post);
+	$postsOnPage = getNumPosts();
+	$numPages = ceil($n/$postsOnPage);
+	$postStart = $page*$postsOnPage - $postsOnPage;
+	$postEnd = $page*$postsOnPage - 1;
+	if ($postEnd >= $postsOnPage)
+		$postEnd = $n - 1;	
+	if ($page > $numPages)
+	{
+		echo "<p><strong>Ошибка 404! Страница не найдена</strong></p>";
+	}
+	else
+	{
+		for ($i = $postStart; $i <= $postEnd; $i++)
+		{
+			?>		
+			<div class="posts"><a href="/post.php?id=<?=$post[$i]['id']?>"><?=$post[$i]['name']?></a></div>
+			<?php
+		}
+	}
+	echo "Страницы: ";
+
+	for ($i = 1; $i <= $numPages; $i++)
+	{	
+		if ($page == $i)
+			echo "<b>".$i."</b> ";
+		else
+			echo "<a href=\"/?page=".$i."\">".$i."</a> ";
+	}
 }
+else
+{
+	echo "<p><strong>Ошибка! Номер страницы некорректен</strong></p>";
+}
+
+
+
 PrintFooter();
 ?>

@@ -1,5 +1,7 @@
 body {background:#f1f1f1; font-family: Verdana, sans-serif; font-size:14px; margin:0;}
 
+a {color: #0000CC;}
+
 #wrapper {width:1000px; margin:0px auto; border-left:1px solid #aaa; border-right:1px solid #aaa; background:#fff;}
 #header, #content, #footer {padding:10px 15px;}
 #header {height:100px;  border-bottom:1px solid #aaa; }
