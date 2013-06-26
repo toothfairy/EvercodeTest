@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteRule ^post/([0-9]+)/? post.php?id=$1 [L]
+RewriteRule ^edit/([0-9]+)/? edit.php?id=$1 [L]
+RewriteRule ^([0-9]+)/? ?page=$1 [L]
