@@ -1,143 +1,116 @@
 <?php
-function PrintHeader($title)
-{	?>
-<!DOCTYPE html>
-<html>
-<head>
-<title><?=$title?> - Мой блог</title>
-<link href="/tmpl/style.css" type="text/css" rel="stylesheet">
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-</head>
-<body>	
-<div id="wrapper">
-	<div id="header">
-		<div id="logo">Мой блог</div>
-		<ul id="mainMenu">
-			<li><a href="/" title="">Главная</a></li>
-			<li><a href="/add.php" title="">Добавить запись</a></li>
-			<li><a href="/edit.php" title="">Редактировать запись</a></li>
-			<li><a href="/exit.php" title="">Выход</a></li>
-		</ul>
-	</div>
-	<div id="content">
-	<?php
-}
-function PrintFooter()
+class templates
 {
-?>
-	</div>
-	<div id="footer">
+	function printHeader($title)
+	{
+		$header = file_get_contents("tmpl/header.html");
+		$header = str_replace ("[[TITLE]]", $title, $header);
+		echo $header;
+	}
+	function printFooter()
+	{
+		$footer = file_get_contents("tmpl/footer.html");
+		echo $footer;
+	}
+	function printFormAdd($name='', $date='', $content='')
+	{
+		$form = file_get_contents("tmpl/formAdd.html");
+		$form = str_replace ("[[NAME]]", $name, $form);
+		$form = str_replace ("[[DATE]]", $date, $form);
+		$form = str_replace ("[[CONTENT]]", $content, $form);
+		echo $form;
+	}
+	function printFormID()
+	{
+		$form = file_get_contents("tmpl/formID.html");
+		echo $form;
+	}
+	function printFormEdit($id, $name='', $date='', $content='')
+	{
+		$form = file_get_contents("tmpl/formEdit.html");
+		$content = str_replace("<br>", "\r\n", $content);	// что бы удобно было редактировать
 	
-	</div>
-</div>
-</body>
-</html>
-<?php
-}
-
-function Connect()
-{
-$host = "evercodetest.dev";
-$dbname = "evercodebase";
-$user ="root";
-$base = new PDO("mysql:host=$host;dbname=$dbname", $user); 
-$base -> query("set names utf8");
-return $base;
-}
-
-function PrintForm($name, $params = '')
-{
-	if ($name == 'formEdit')
-	{
-	?>
-		<form action="/edit/<?=$params['id']?>" method="post" class="formEdit">
-			<p>Введите название<br>
-				<input type="text" name="name" value="<?=$params['name']?>">
-			</p>
-			<p>Введите дату<br>
-				<input type="text" name="date" value="<?=$params['date']?>">
-			</p>
-			<p>	
-				Введите текст<br>
-				<?php
-				$params['content'] = str_replace("<br>", "\r\n", $params['content']);	// что бы удобно было редактировать
-				?>
-				<textarea rows="8" name="text"><?=$params['content']?></textarea>
-			</p>
-			<p><input type="submit" class="button" autofocus></p>
-		</form>
-	<?php
-	}
-	if ($name == 'formId')
-	{
-	?>
-		<form action="/edit.php" method="get" class="formID">
-			<p>Введите id записи для редактирования<br>
-				<input type="text" name="id" value="">
-			</p>
-			<p><input type="submit" class="button" autofocus></p>
-		</form>
-	<?php
-	}
-	if ($name == 'formAdd')
-	{
-		if ($params == '')
-		{
-			$params['name'] = '';
-			$params['date'] = '';
-			$params['content'] = '';
-		}
-		?>
-		<form action="/add.php" method="post" class="formAdd">
-			<p>Введите название<br>
-				<input type="text" name="name" value="<?=$params['name']?>">
-			</p>
-			<p>Введите дату<br>
-				<input type="text" name="date" value="<?=$params['date']?>">
-			</p>
-			<p>	
-				Введите текст<br>
-				<textarea rows="8" name="text"><?=$params['content']?></textarea>
-			</p>
-			<p><input type="submit" class="button" autofocus></p>
-		</form>
-		<?php
+		$form = str_replace ("[[ID]]", $id, $form);
+		$form = str_replace ("[[NAME]]", $name, $form);
+		$form = str_replace ("[[DATE]]", $date, $form);
+		$form = str_replace ("[[CONTENT]]", $content, $form);
+		echo $form;
 	}
 }
-
-function getNumPosts()
+class conf
 {
-	return 5;
-}
-function getLogin()
-{
-	return 'admin';
-}
-function getPass()
-{
-	return 'qwerty';
-}
-
-function getAuth()
-{	
-	$auth = false;
-	$login = getLogin();
-	$pas = getPass();
-	if (!isset($_SERVER['PHP_AUTH_USER'])) 
+	private $host;
+	private $baseName;
+	private $user;
+	private $login;
+	private $pass;
+	private $numPosts;
+	private function setParams()
 	{
-		header('WWW-Authenticate: Basic realm="Authorization"');		
-		// header('HTTP/1.0 401 Unauthorized');
+		$file = parse_ini_file("tmpl/conf.ini");
+		$this->host = $file['host'];
+		$this->baseName = $file['baseName'];
+		$this->user = $file['user'];
+		$this->login = $file['login'];
+		$this->pass = $file['pass'];
+		$this->numPosts = $file['numPosts'];
+	}
+	function Connect()
+	{
+		$base = new PDO("mysql:host=".$this->host.";dbname=".$this->baseName, $this->user); 
+		$base -> query("set names utf8");
+		return $base;
+	}
+	function __construct()
+	{
+		$this->setParams();
+	}
+	function getHost()
+	{
+		return $this->host;
+	}
+	function getBaseName()
+	{
+		return $this->baseName;
+	}
+	function getUser()
+	{
+		return $this->user;
+	}
+	function getNumPosts()
+	{
+		return $this->numPosts;
+	}
+	function getLogin()
+	{
+		return $this->login;
+	}
+	function getPass()
+	{
+		return $this->pass;
+	}
+	function getAuth()
+	{	
 		$auth = false;
-	} else {			
-		if ($login == $_SERVER['PHP_AUTH_USER'] and $pas == $_SERVER['PHP_AUTH_PW'])
-			$auth = true;
-		else {
-			$auth = false;	
-			header( "HTTP/1.0 401 Unauthorized");
-			header('WWW-Authenticate: Basic realm="Wrong login/password"');
-		}
-	}	
-	return $auth;	
+		$login = $this->getLogin();
+		$pas = $this->getPass();
+		if (!isset($_SERVER['PHP_AUTH_USER'])) 
+		{
+			header('WWW-Authenticate: Basic realm="Authorization"');		
+			// header('HTTP/1.0 401 Unauthorized');
+			$auth = false;
+		} else {			
+			if ($login == $_SERVER['PHP_AUTH_USER'] and $pas == $_SERVER['PHP_AUTH_PW'])
+				$auth = true;
+			else {
+				$auth = false;	
+				header( "HTTP/1.0 401 Unauthorized");
+				header('WWW-Authenticate: Basic realm="Wrong login/password"');
+			}
+		}	
+		return $auth;	
+	}
 }
+
 ?>
 

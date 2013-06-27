@@ -1,11 +1,13 @@
 <?php
 require_once "/tmpl/functions.php";
 
-$base = Connect();
+$conf = new conf;
+$base = $conf->connect();
+$tmpl = new templates;
 
-$auth = getAuth();
+$auth = $conf->getAuth();
 
-PrintHeader("Добавить запись");
+$tmpl->PrintHeader("Добавить запись");
 
 if ($auth)
 {
@@ -15,13 +17,12 @@ if ($auth)
 
 	if ($name == '' and $date == '' and $text == '')
 	{
-		PrintForm('formAdd');
+		$tmpl->printFormAdd();
 	}
 	elseif ($name == '' or $date == '' or $text == '')
 	{
 		echo "<p><strong>Форма заполнена неверно</strong></p>";
-		$params = array('name' => $name, 'date' => $date, 'content' => $text);
-		PrintForm('formAdd',$params);
+		$tmpl->printFormAdd($name, $date, $text);
 	}
 	else
 	{
@@ -42,5 +43,5 @@ else
 {
 	echo "<p><strong>Авторизируйтесь!</strong></p>";
 }
-PrintFooter();
+$tmpl->printFooter();
 ?>

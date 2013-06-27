@@ -1,10 +1,12 @@
 <?php
 require_once "/tmpl/functions.php";
 
-$base = Connect();
+$conf = new conf;
+$base = $conf->connect();
+$tmpl = new templates;
 
 $page = isset($_GET['page']) ? $_GET['page'] : '1';
-PrintHeader("Главная страница");
+$tmpl->printHeader("Главная страница");
 
 if (is_numeric($page))
 {
@@ -15,7 +17,7 @@ if (is_numeric($page))
 	$post = $sql -> fetchAll();
 
 	$n = count($post);
-	$postsOnPage = getNumPosts();
+	$postsOnPage = $conf->getNumPosts();
 	$numPages = ceil($n/$postsOnPage);
 	$postStart = $page*$postsOnPage - $postsOnPage;
 	$postEnd = $page*$postsOnPage - 1;
@@ -49,8 +51,5 @@ else
 {
 	echo "<p><strong>Ошибка! Номер страницы некорректен</strong></p>";
 }
-
-
-
-PrintFooter();
+$tmpl->printFooter();
 ?>

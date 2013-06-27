@@ -1,9 +1,11 @@
 <?php
 require_once "/tmpl/functions.php";
 
-$base = Connect();
+$conf = new conf;
+$base = $conf->connect();
+$tmpl = new templates;
 
-$auth = getAuth();
+$auth = $conf->getAuth();
 
 if ($auth)
 {
@@ -24,13 +26,12 @@ if ($auth)
 		
 		if ($post)
 		{	
-			PrintHeader("Редактирование: ".$post['name']);
+			$tmpl->printHeader("Редактирование: ".$post['name']);
 			?>
 			<?php
 			if ($newName == '' and $newDate == '' and $newText == '')
 			{
-				$params = array('id' => $id, 'name' => $post['name'], 'date' => $post['date'], 'content' => $post['content']);
-				PrintForm('formEdit',$params);
+				$tmpl->printFormEdit($id, $post['name'], $post['date'],$post['content']);
 			}elseif ($newName == '' or $newDate == '' or $newText == '')
 			{			
 				echo "<p><strong>Вы заполнили не все поля</strong></p>";
@@ -60,24 +61,24 @@ if ($auth)
 		}
 		else
 		{
-			PrintHeader("404: Запись не найдена");
+			$tmpl->printHeader("404: Запись не найдена");
 			?>
 			<p><strong>404 Ошибка!<br>Запись для редактирования не найдена</strong></p>
 			<?php
-			PrintForm('formId');	
+			$tmpl->printFormID();	
 		}
 		
 	}
 	else
 	{
-		PrintHeader("Редактировать");
-		PrintForm('formId');
+		$tmpl->printHeader("Редактировать");
+		$tmpl->printFormID();
 	}
 }
 else
 {
-	PrintHeader("Ошибка авторизации - Редактирование");
+	$tmpl->printHeader("Ошибка авторизации - Редактирование");
 	echo "<p><strong>Авторизируйтесь!</strong></p>";
 }
-PrintFooter();
+$tmpl->printFooter();
 ?>

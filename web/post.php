@@ -1,7 +1,10 @@
 <?php
 require_once "/tmpl/functions.php";
 
-$base = Connect();
+$conf = new conf;
+$base = $conf->connect();
+
+$tmpl = new templates;
 
 $id = isset($_GET['id']) ? $_GET['id'] : 'NULL';
 
@@ -15,7 +18,7 @@ if ($id != 'NULL')
 	
 	if ($post)
 	{
-		PrintHeader($post['name']);
+		$tmpl->printHeader($post['name']);
 
 				?>
 				<div class="post">
@@ -44,15 +47,15 @@ if ($id != 'NULL')
 	}
 	else
 	{
-		PrintHeader("404: Запись не найдена");
+		$tmpl->printHeader("404: Запись не найдена");
 		echo "<p><strong>404 Ошибка!<br>Запись не найдена</strong></p>";
 	}	
 }
 else
 {
-	PrintHeader("Ошибка");
+	$tmpl->printHeader("Ошибка");
 	echo "<p><strong>Ошибка!<br>Что-то пошло не так и поломалось</strong></p>";
 }
 
-PrintFooter();
+$tmpl->printFooter();
 ?>
