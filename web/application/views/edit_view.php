@@ -10,5 +10,5 @@
 		Введите текст<br>
 		<textarea rows="8" name="text"><?=$data['post']['content']?></textarea>
 	</p>
-	<p><input type="submit" class="button" autofocus></p>
+	<p><input type="submit" class="button"></p>
 </form>

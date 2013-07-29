@@ -8,6 +8,9 @@
 		}
 	}
 ?>
+<?php
+if ($data['message'] != "Регистрация прошла успешно") {
+?>
 <form action="/register" method="post">
     <p>
 		Логин:<br>
@@ -22,3 +25,4 @@
 	<input type="submit" value="Зарегестрироваться">
 	<input type="text" name="fl" value="true" hidden>
 </form>
+<?php } ?>

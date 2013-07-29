@@ -9,20 +9,15 @@ class Model_Post extends Model
 		$routes = explode('/', $url);
 		
 		$cleanurl = $routes[2];
-		$sql = 'SELECT id, name, content, date FROM posts WHERE cleanurl=:cleanurl';
-		$sql = $this -> base -> prepare($sql);
-		$sql -> bindParam (':cleanurl',$cleanurl,PDO::PARAM_INT);
-		$sql -> execute();
-		$post = $sql -> fetch();
+		$post = $this -> base -> getOnePostUrl($cleanurl);
 		
-		if ($post) 
-		{		
-			$data['title'] = $post['name'];
-			$data['post'] = $post; 
-			return $data;
-		}
-		else {
+		if (!$post) 
+		{	
 			Route::ErrorPage404();
 		}
+		$data['title'] = $post['name'];
+		$data['post'] = $post; 
+		return $data;
+	
 	}
 }	

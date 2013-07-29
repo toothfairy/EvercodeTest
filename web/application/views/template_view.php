@@ -5,13 +5,15 @@
 <link href="/css/style.css" type="text/css" rel="stylesheet">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 </head>
-<body>	
+<body>
 <div id="wrapper">
 	<div id="header">
 		<div id="logo">Мой блог</div>
 		<ul id="mainMenu">
 			<li><a href="/" title="">Главная</a></li>
 			<li><a href="/add" title="">Добавить запись</a></li>
+			<li><a href="/login" title="">Вход</a></li>
+			<li><a href="/register">Регистрация</a>
 			<li><a href="/exit" title="">Выход</a></li>
 		</ul>
 	</div>

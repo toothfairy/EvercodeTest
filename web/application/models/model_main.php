@@ -2,9 +2,7 @@
 class Model_Main extends Model
 {
     public function get_data()
-    {		
-		//$page = isset($_GET['page']) ? $_GET['page'] : 1;
-		
+    {				
 		// определяем номер страницы
 		$url = $_SERVER['REQUEST_URI'];
         $url = substr($url, strpos($url, '?'), strlen($url) - strpos($url, '?'));
@@ -25,12 +23,7 @@ class Model_Main extends Model
 				$page = 1;
 			}
 		}
-		
-		$sql = 'SELECT id, name, content, date, cleanurl FROM posts ORDER BY id DESC';
-		$sql = $this -> base -> prepare($sql);
-		$sql -> execute();
-	
-		$posts = $sql -> fetchAll();
+		$posts = $this -> base -> getAllPosts();
 			
 		$n = count($posts);
 		$postsOnPage = $this->numPosts;
@@ -44,12 +37,8 @@ class Model_Main extends Model
 		{
 			Route::ErrorPage404();
 		}
-		else
-		{
-			$posts = array_slice($posts,$postStart,$postEnd-$postStart+1);
-		}
-			
-			
+		$posts = array_slice($posts,$postStart,$postEnd-$postStart+1);
+		
 		$data['title'] = 'Главная страница';
 		$data['posts'] = $posts;
 		$data['page'] = $page;

@@ -11,6 +11,6 @@
 		Введите текст<br>
 		<textarea rows="8" name="text"><?=$data['text']?></textarea>
 	</p>
-	<p><input type="submit" class="button" autofocus></p>
+	<p><input type="submit" class="button"></p>
 </form>
 </p>	

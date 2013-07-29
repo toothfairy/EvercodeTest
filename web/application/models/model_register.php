@@ -8,6 +8,7 @@ class Model_Register extends Model
 		$data['password'] = isset($_POST['password']) ? $_POST['password'] : '';
 		$data['email'] = isset($_POST['email']) ? $_POST['email'] : '';
 		$data['fl'] = isset($_POST['fl']) ? $_POST['fl'] : false;
+		$data['email'] = trim($data['email']); // убираем пробелы
 		if ($data['fl']) 
 		{
 			 if(!preg_match("/^[a-zA-Z0-9]+$/",$data['login']))
@@ -18,13 +19,8 @@ class Model_Register extends Model
 			{
 				$data['errors']['login2'] = "Логин должен быть не меньше 3-х символов и не больше 20";
 			}
-			$sql = 'SELECT COUNT(id) FROM users WHERE login=:login';
-			$sql = $this -> base -> prepare($sql);
-			$sql -> bindParam (':login',$data['login'],PDO::PARAM_STR);
-			$sql -> execute();
-			$user = 0;
-			$user = $sql -> fetch();
-			if ($user['COUNT(id)'] > 0)
+			$is_user = $this -> base -> isUser($data['login']);
+			if ($is_user)
 			{
 				$data['errors']['login3'] = "Пользователь с таким логином уже существует";
 			}
@@ -32,24 +28,20 @@ class Model_Register extends Model
 			{
 				$data['errors']['password'] = "Пароль должен быть не меньше 6 символов и не больше 20";
 			}
-			if (!preg_match("/^(?:[a-z0-9]+(?:[-_]?[a-z0-9]+)?@[a-z0-9]+(?:\.?[a-z0-9]+)?\.[a-z]{2,5})$/i",trim($data['email'])))
+			if (!preg_match("/^(?:[a-z0-9]+(?:[-_]?[a-z0-9]+)?@[a-z0-9]+(?:\.?[a-z0-9]+)?\.[a-z]{2,5})$/i",$data['email']))
 			{
 				$data['errors']['email'] = "Некорректный e-mail";
 			}
 			if (!isset($data['errors']))
 			{
 				// если ошибок нет - регистрируем
-				$sql = 'INSERT INTO users (login, password, email) VALUES (:login,:password,:email)';
-				$sql = $this->base -> prepare($sql);
-				$sql -> bindParam (':login',$data['login'],PDO::PARAM_STR);
-				$sql -> bindParam (':password',$data['password'],PDO::PARAM_STR);
-				$sql -> bindParam (':email',$data['email'],PDO::PARAM_STR);
-				$sql -> execute();			
+				$data['password'] = md5(md5($data['password'].$this->passkey));
+				$this -> base -> addUser($data['login'],$data['password'],$data['email']);
 				$data['message'] = "Регистрация прошла успешно";
 			}
 			else
 			{
-				$data['message'] = "Ошибка:";
+				$data['message'] = "Ошибка регистрации:";
 			}
 		}
 		else	

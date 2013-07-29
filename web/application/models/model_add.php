@@ -3,6 +3,10 @@ class Model_Add extends Model
 {
     public function get_data()
     {
+		if (!isset($_SESSION['userid']))
+		{
+			Route::ErrorAccess();
+		}
 		$data['name'] = isset($_POST['name']) ? $_POST['name'] : '';
 		$data['date'] = isset($_POST['date']) ? $_POST['date'] : '';
 		$data['text'] = isset($_POST['text']) ? $_POST['text'] : '';
@@ -19,14 +23,12 @@ class Model_Add extends Model
 		}
 		else
 		{
-			$sql = 'INSERT INTO posts (name, content, date, cleanurl) VALUES (:name,:text,:date,:cleanurl)';
-			$sql = $this->base -> prepare($sql);
-			$sql -> bindParam (':name',$data['name'],PDO::PARAM_STR);
-			$data['text'] = str_replace("\r\n", "<br>", $data['text']);
-			$sql -> bindParam (':text',$data['text'],PDO::PARAM_STR);
-			$sql -> bindParam (':date',$data['date'],PDO::PARAM_STR);
-			$sql -> bindParam (':cleanurl',$data['cleanurl'],PDO::PARAM_STR);
-			$sql -> execute();			
+			if ($this -> base -> isPostUrl($data['cleanurl']))
+			{
+				// если по такому url уже есть пост, то приписываем _2
+				$data['cleanurl'] = $data['cleanurl'].'_2';
+			}
+			$this -> base -> addPost($data['name'],$data['text'],$data['date'],$data['cleanurl']);
 			$data['message'] = "Добавлена успешно!";
 		}
 		$data['title'] = 'Добавить запись';
