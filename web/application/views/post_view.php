@@ -1,7 +1,10 @@
 <div class="post">
+	<?=$data['post']['time']?> <?=$data['post']['author_login']?> 
+	|
+	Категория: <a href="/category/<?=$data['post']['category']['cleanurl']?>"><?=$data['post']['category']['name']?></a>
 	<div class="postName">
 		<div class="editLink"><a href="/edit/<?=$data['post']['id']?>">Редактировать</a></div>
-		<?=$data['post']['date']?>: <?=$data['post']['name']?>
+		<?=$data['post']['name']?>
 	</div>
 	<div class="postContent"><?=$data['post']['content']?></div>
 </div>

@@ -9,4 +9,8 @@ class Controller_Errors extends Controller
     {	
         $this->view->generate('errors_access_view.php', 'template_view.php');
     }
+	function action_404()
+    {	
+        $this->view->generate('errors_404_view.php', 'template_view.php');
+    }
 }

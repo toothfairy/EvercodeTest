@@ -21,21 +21,36 @@ class Base {
     }    
 	function getAllPosts()
 	{
-		$sql = 'SELECT id, name, content, date, cleanurl FROM posts ORDER BY id DESC';
+		$sql = 'SELECT id, name, content, time, cleanurl FROM posts ORDER BY id DESC';
 		$sql = $this -> base -> prepare($sql);
 		$sql -> execute();
 		$posts = $sql -> fetchAll();
 		return $posts;
 	}
-	function addPost($name, $text, $date, $cleanurl)
+	function getPostsByCat($id)
 	{
-		$sql = 'INSERT INTO posts (name, content, date, cleanurl) VALUES (:name,:text,:date,:cleanurl)';
+		$sql = 'SELECT id, name, content, time, cleanurl 
+				FROM posts
+				WHERE category_id = :id
+				ORDER BY id DESC';
+		$sql = $this -> base -> prepare($sql);
+		$sql -> bindParam (':id',$id,PDO::PARAM_INT);
+		$sql -> execute();
+		$posts = $sql -> fetchAll();
+		return $posts;
+	}
+	function addPost($name, $text, $cleanurl, $time, $login, $cat)
+	{
+		$sql = 'INSERT INTO posts (name, content, category_id, cleanurl, time, author_login) 
+				VALUES (:name,:text,:cat,:cleanurl,:time,:login)';
 		$sql = $this->base -> prepare($sql);
 		$sql -> bindParam (':name',$name,PDO::PARAM_STR);
 		$data['text'] = str_replace("\r\n", "<br>", $text);
 		$sql -> bindParam (':text',$text,PDO::PARAM_STR);
-		$sql -> bindParam (':date',$date,PDO::PARAM_STR);
+		$sql -> bindParam (':cat',$cat,PDO::PARAM_INT);
 		$sql -> bindParam (':cleanurl',$cleanurl,PDO::PARAM_STR);
+		$sql -> bindParam (':time',$time,PDO::PARAM_STR);
+		$sql -> bindParam (':login',$login,PDO::PARAM_STR);
 		$sql -> execute();	
 	}
 	function isPostUrl ($cleanurl)
@@ -53,7 +68,7 @@ class Base {
 	}
 	function getOnePostId($id)
 	{
-		$sql = 'SELECT id, name, content, date FROM posts WHERE id=:id';
+		$sql = 'SELECT id, name, content, category_id FROM posts WHERE id=:id';
 		$sql = $this -> base -> prepare($sql);
 		$sql -> bindParam (':id',$id,PDO::PARAM_INT);
 		$sql -> execute();
@@ -62,20 +77,20 @@ class Base {
 	}
 	function getOnePostUrl($cleanurl)
 	{
-		$sql = 'SELECT id, name, content, date FROM posts WHERE cleanurl=:cleanurl';
+		$sql = 'SELECT id, name, content, category_id, time, author_login FROM posts WHERE cleanurl=:cleanurl';
 		$sql = $this -> base -> prepare($sql);
 		$sql -> bindParam (':cleanurl',$cleanurl,PDO::PARAM_INT);
 		$sql -> execute();
 		$post = $sql -> fetch();
 		return $post;
 	}
-	function updatePost($id, $newName, $newText, $newDate)
+	function updatePost($id, $newName, $newText, $newCategory)
 	{
 		$sql ="UPDATE posts 
 			SET 
 				name = :name, 
-				content = :content, 
-				date = :date
+				content = :content,
+				category_id = :cat
 			WHERE
 				id = :id;";
 		$sql = $this -> base -> prepare($sql);
@@ -83,7 +98,7 @@ class Base {
 		$sql -> bindParam (':name',$newName,PDO::PARAM_STR);
 		$newText = str_replace("\r\n", "<br>", $newText);
 		$sql -> bindParam (':content',$newText,PDO::PARAM_STR);
-		$sql -> bindParam (':date',$newDate,PDO::PARAM_STR);
+		$sql -> bindParam (':cat',$newCategory,PDO::PARAM_INT);
 		$bl = $sql -> execute();
 	}
 	function isUser($login)
@@ -118,5 +133,52 @@ class Base {
 		$sql -> bindParam (':password',$password,PDO::PARAM_STR);
 		$sql -> bindParam (':email',$email,PDO::PARAM_STR);
 		$sql -> execute();
+	}
+	function getAllCategories()
+	{
+		$sql = 'SELECT id, name, cleanurl FROM categories';
+		$sql = $this -> base -> prepare($sql);
+		$sql -> execute();
+		$cat = $sql -> fetchAll();
+		return $cat;
+	}
+	function addCategory($name,$cleanurl)
+	{
+		$sql = 'INSERT INTO categories (name, cleanurl) VALUES (:name, :cleanurl)';
+		$sql = $this->base -> prepare($sql);
+		$sql -> bindParam (':name',$name,PDO::PARAM_STR);
+		$sql -> bindParam (':cleanurl',$cleanurl,PDO::PARAM_STR);
+		$sql -> execute();
+	}
+	function isCategoryUrl ($cleanurl)
+	{
+		$sql = 'SELECT COUNT(id) FROM categories WHERE cleanurl=:cleanurl';
+		$sql = $this -> base -> prepare($sql);
+		$sql -> bindParam (':cleanurl',$cleanurl,PDO::PARAM_STR);
+		$sql -> execute();
+		$cat = $sql -> fetch();
+		if ($cat['COUNT(id)'] > 0)
+			$fl = true;
+		else
+			$fl = false;			
+		return $fl;
+	}
+	function getCategoryUrl ($cleanurl)
+	{
+		$sql = 'SELECT name, id FROM categories WHERE cleanurl=:cleanurl';
+		$sql = $this -> base -> prepare($sql);
+		$sql -> bindParam (':cleanurl',$cleanurl,PDO::PARAM_STR);
+		$sql -> execute();
+		$cat = $sql -> fetch();
+		return $cat;
+	}
+	function getCategoryId ($id)
+	{
+		$sql = 'SELECT name, cleanurl FROM categories WHERE id=:id';
+		$sql = $this -> base -> prepare($sql);
+		$sql -> bindParam (':id',$id,PDO::PARAM_INT);
+		$sql -> execute();
+		$cat = $sql -> fetch();
+		return $cat;
 	}
 }

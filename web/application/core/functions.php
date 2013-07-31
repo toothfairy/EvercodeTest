@@ -20,3 +20,13 @@ function translit($filename)
 	); 
 	return strtr($filename,$transsimvol); 
 }  
+function getPostTime($str)
+{
+	$str = substr($str, 11, -3);
+	return $str;
+}
+function getPostDate($str)
+{
+	$str = substr($str, 0, -9);
+	return $str;
+}

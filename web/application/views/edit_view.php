@@ -3,8 +3,17 @@
 	<p>Введите название<br>
 		<input type="text" name="name" value="<?=$data['post']['name']?>">
 	</p>
-	<p>Введите дату<br>
-		<input type="text" name="date" value="<?=$data['post']['date']?>">
+	<p>Выберите категорию<br>
+		<select name="category">
+			<?php 
+			foreach ($data['categories'] as $cat) {
+				echo "<option value=\"".$cat['id']."\" ";
+				if ($cat['id'] == $data['post']['category_id'])
+					echo "selected ";
+				echo ">".$cat['name']."</option>";
+			}
+			?>			
+		</select>
 	</p>
 	<p>	
 		Введите текст<br>

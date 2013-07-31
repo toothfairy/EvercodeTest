@@ -11,6 +11,7 @@
 		<div id="logo">Мой блог</div>
 		<ul id="mainMenu">
 			<li><a href="/" title="">Главная</a></li>
+			<li><a href="/category" title="">Категории</a></li>
 			<li><a href="/add" title="">Добавить запись</a></li>
 			<li><a href="/login" title="">Вход</a></li>
 			<li><a href="/register">Регистрация</a>

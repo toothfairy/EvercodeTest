@@ -4,8 +4,16 @@
 	<p>Введите название<br>
 		<input type="text" name="name" value="<?=$data['name']?>">
 	</p>
-	<p>Введите дату<br>
-		<input type="text" name="date" value="<?=$data['date']?>">
+	<p>Выберите категорию<br>
+		<select name="category">
+			<?php 
+			foreach ($data['categories'] as $cat) {
+			?>
+			<option value="<?=$cat['id']?>"><?=$cat['name']?></option>
+			<?php 
+			}
+			?>			
+		</select>
 	</p>
 	<p>	
 		Введите текст<br>
