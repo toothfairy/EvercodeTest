@@ -5,7 +5,10 @@ class Model_Post extends Model
     {		
 		// определяем url
 		$url = $_SERVER['REQUEST_URI'];
-        $url = substr($url, strpos($url, '?'), strlen($url) - strpos($url, '?'));
+        if (strpos($url, '?'))
+			{
+				 $url = substr($url, 0, strpos($url, '?'));
+			}
 		$routes = explode('/', $url);
 		
 		$cleanurl = $routes[2];

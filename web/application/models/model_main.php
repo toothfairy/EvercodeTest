@@ -5,9 +5,12 @@ class Model_Main extends Model
     {				
 		// определяем номер страницы
 		$url = $_SERVER['REQUEST_URI'];
-        $url = substr($url, strpos($url, '?'), strlen($url) - strpos($url, '?'));
+        if (strpos($url, '?'))
+			{
+				 $url = substr($url, 0, strpos($url, '?'));
+			}
 		$routes = explode('/', $url);
-		if ($_SERVER['REQUEST_URI'] == '/' or $_SERVER['REQUEST_URI'] == '/main')
+		if ($url == '/' or $url == '/main')
 		{
 			$page = 1;
 		}
@@ -44,5 +47,6 @@ class Model_Main extends Model
 		$data['page'] = $page;
 		$data['maxpage'] = $numPages;
 		return $data;
+		
     }
 }

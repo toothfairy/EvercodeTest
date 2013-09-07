@@ -9,7 +9,10 @@ class Model_Edit extends Model
 		}
 		// определяем id
 		$url = $_SERVER['REQUEST_URI'];
-        $url = substr($url, strpos($url, '?'), strlen($url) - strpos($url, '?'));
+        if (strpos($url, '?'))
+			{
+				 $url = substr($url, 0, strpos($url, '?'));
+			}
 		$routes = explode('/', $url);
 		if (!is_numeric($routes[2])) 
 		{
