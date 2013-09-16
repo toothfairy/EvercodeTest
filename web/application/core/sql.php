@@ -45,7 +45,7 @@ class Base {
 				VALUES (:name,:text,:cat,:cleanurl,:time,:login)';
 		$sql = $this->base -> prepare($sql);
 		$sql -> bindParam (':name',$name,PDO::PARAM_STR);
-		$data['text'] = str_replace("\r\n", "<br>", $text);
+		$text = str_replace("\r\n", "<br>", $text);
 		$sql -> bindParam (':text',$text,PDO::PARAM_STR);
 		$sql -> bindParam (':cat',$cat,PDO::PARAM_INT);
 		$sql -> bindParam (':cleanurl',$cleanurl,PDO::PARAM_STR);
