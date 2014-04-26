@@ -9,7 +9,7 @@ class Model
 		session_start();
 		$this -> base = new Base;
 		$file = parse_ini_file("/application/conf.ini");
-		$this->numPosts = $file['numPosts'];
+		$this->numPosts = (int)$file['numPosts'];
 		$this->passkey = $file['passkey'];
 	}
     public function get_data()

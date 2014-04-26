@@ -16,7 +16,7 @@ ul#mainMenu li { float:left; list-style:none; margin:0 15px;}
 .posts {margin:0 0 5px 0; padding:5px 0px 5px 5px; border-bottom:1px solid #f5f5f5;font-size:16px; font-weight:bold; }
 
 .post {margin:0 0 15px 0; padding:5px 0px; border-bottom:1px solid #f5f5f5;}
-.postName {font-size:16px; font-weight:bold; margin:0 0 5px 0;}
+.postName {font-size:17px; font-weight:bold; margin:10px 0 15px 0;}
 .postContent {}
 
 .editLink {font-size:12px; float:right; font-weight:normal;}
