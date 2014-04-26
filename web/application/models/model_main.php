@@ -23,21 +23,18 @@ class Model_Main extends Model
 				$page = 1;
 			}
 		}
-		$posts = $this -> base -> getAllPosts();
-			
-		$n = count($posts);
+				
+		$n = $this -> base -> countPosts();
 		$postsOnPage = $this->numPosts;
-		$numPages = ceil($n/$postsOnPage);
-		$postStart = $page*$postsOnPage - $postsOnPage;
-		$postEnd = $page*$postsOnPage - 1;
 		
-		if ($postEnd >= $n)
-			$postEnd = $n - 1;	
+		$postStart = ($page - 1)*$postsOnPage;
+		$numPages = ceil($n/$postsOnPage);	
+		
+		$posts = $this -> base -> getPosts($postStart, $postsOnPage);
 		if ($page > $numPages)
 		{
 			Route::ErrorPage404();
 		}
-		$posts = array_slice($posts,$postStart,$postEnd-$postStart+1);
 		
 		$data['title'] = 'Главная страница';
 		$data['posts'] = $posts;

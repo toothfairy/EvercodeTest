@@ -27,6 +27,24 @@ class Base {
 		$posts = $sql -> fetchAll();
 		return $posts;
 	}
+	function getPosts($start, $end)
+	{
+		$sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT :start, :end';
+		$sql = $this -> base -> prepare($sql);
+		$sql -> bindParam (':start',$start,PDO::PARAM_INT);
+		$sql -> bindParam (':end',$end,PDO::PARAM_INT);
+		$sql -> execute();
+		$posts = $sql -> fetchAll();
+		return $posts;
+	}
+	function countPosts()
+	{
+		$sql = 'SELECT COUNT(id) FROM posts';
+		$sql = $this -> base -> prepare($sql);
+		$sql -> execute();
+		$posts = $sql -> fetch();
+		return $posts[0];
+	}
 	function getPostsByCat($id)
 	{
 		$sql = 'SELECT id, name, content, time, cleanurl 

@@ -16,7 +16,7 @@ function translit($filename)
 	"ф"=>"f","х"=>"h","ц"=>"ts","ч"=>"ch","ш"=>"sh", 
 	"щ"=>"sch","ъ"=>"","ы"=>"y","ь"=>"","э"=>"e", 
 	"ю"=>"yu","я"=>"ya",
-	" "=>"_"
+	" "=>"_", "»"=>"", "«"=>"",
 	); 
 	return strtr($filename,$transsimvol); 
 }  

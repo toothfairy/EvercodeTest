@@ -11,6 +11,7 @@
 <?php
 if ($data['message'] != "Вход выполнен" and $data['message'] != "Вы уже авторизованы") {
 ?>
+<p>log: admin<br>pass: qwerty</p>
 <form action="/login" method="post">
     <p>
 		Логин:<br>
